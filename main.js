@@ -1,6 +1,10 @@
-text = 'lehrtext';
+var losungen = {
+  text: 'lehrtext',
+  textSwitchInterval: 60000,
+  intervalId: null,
+}
 
-function updateText() {
+losungen.updateText = function() {
   $.getJSON( "modules/die-losungen/losung.php", function( data ) {
     $('#losungsvers').html(data.Losungsvers);
     $('#losungstext').html(data.Losungstext);
@@ -12,27 +16,32 @@ function updateText() {
   var then = new Date(now);
   then.setHours(24,0,0,0);
   var sleep = then - now + 10;
-  setTimeout(updateText, sleep);
-
+  setTimeout(this.updateText, sleep);
 }
 
-function switchText() {
-  if (text == 'lehrtext') {
+losungen.switchText = function() {
+  if (this.text == 'lehrtext') {
     $('.lehrtext').fadeOut(1000, function() {
       $('.losung').fadeIn(1000);
     });
-    text = 'losung';
+    this.text = 'losung';
 
   } else {
     $('.losung').fadeOut(1000,function() {
       $('.lehrtext').fadeIn(1000);
     });
-    text = 'lehrtext';
+    this.text = 'lehrtext';
   }
 }
 
+losungen.init = function() {
+  this.switchText();
+  this.updateText();
+  this.intervalId = setInterval(function () {
+    this.switchText();
+  }.bind(this), this.textSwitchInterval);
+}
+
 $().ready(function(){
-  switchText();
-  updateText();
-  setInterval(switchText, 60000);
+  losungen.init();
 });
