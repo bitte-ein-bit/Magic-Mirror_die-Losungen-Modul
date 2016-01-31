@@ -1,0 +1,14 @@
+#die-losungen .losungen {
+	width: 45%;
+	text-align: justify;
+}
+
+#die-losungen .text {
+	opacity: 0.8;
+}
+
+#die-losungen .verse {
+	text-align: right;
+
+	opacity: 0.6;
+}
